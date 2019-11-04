@@ -1,0 +1,3 @@
+<select [disabled]="isDisabled" type="number" class="form-control" [(ngModel)]="selectedItem" (change)="selected()">
+    <option *ngFor="let mode of _items" [ngValue]="mode">{{mode.primaryLang}} - {{mode.secondaryLang}}</option>
+</select>

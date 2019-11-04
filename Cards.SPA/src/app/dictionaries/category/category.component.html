@@ -1,0 +1,3 @@
+<select [disabled]="isDisabled" type="number" class="form-control" [(ngModel)]="selectedItem" (change)="selected()">
+    <option *ngFor="let category of _items" [ngValue]="category">{{category.name}}</option>
+</select>

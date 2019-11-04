@@ -1,0 +1,67 @@
+<form class="card border-primary card-height" [formGroup]="cardForm">
+    <div formGroupName="card" class="card-height">
+
+        <div class="row card-header ml-0 mr-0 justify-content-end">
+
+            <div class="col-sm-9" *ngIf="(cards && cards.length > 0 || !componentState.View)">
+                <div class="row justify-content-between">
+                    <app-category class="col-sm-4" [items]="dictionarySettings.categoryItems"
+                        [isDisabled]="dictionarySettings.isCategoryDisabled"
+                        [selectedItem]="dictionarySettings.categoryItem" (itemChanged)="categoryChanged($event)">
+                    </app-category>
+                    <app-mode class="col-sm-4" [items]="dictionarySettings.modeItems"
+                        [isDisabled]="dictionarySettings.isModeDisabled" (itemChanged)="modeChanged($event)"
+                        [selectedItem]="dictionarySettings.modeItem">
+                    </app-mode>
+                    <app-repeat-rate class="col-sm-4" [items]="dictionarySettings.repeatRateItems"
+                        [isDisabled]="dictionarySettings.isRepeatRateDisabled"
+                        [selectedItem]="dictionarySettings.repeatRateItem" (itemChanged)="repeatrateChanged($event)">
+                    </app-repeat-rate>
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <div class="row">
+                    <button *ngIf="componentState.View" class="col-sm-12 btn btn-outline-primary"
+                        (click)="createMode()">Create</button>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="componentState.View" class="card-body text-primary">
+            <h4 class="card-title">{{cardF.get('word').value}}</h4>
+            <h5 class="card-text red">{{cardF.get('meaning').value}}</h5>
+            <p class="card-text">{{cardF.get('note').value}}</p>
+        </div>
+
+        <div *ngIf="(componentState.Edit || componentState.Create)" class="card-body text-primary">
+            <textarea class="form-control mb-3" placeholder="Word" formControlName="word"
+                [ngClass]="{ 'is-invalid': submitted && cardF.get('word').errors }">
+            </textarea>
+
+            <textarea class="form-control mb-3" placeholder="Translation" formControlName="meaning"
+                [ngClass]="{ 'is-invalid': submitted && cardF.get('meaning').errors }"></textarea>
+            <div *ngIf="submitted && cardF.get('meaning').errors" class="invalid-feedback">
+
+            </div>
+            <p><textarea class="form-control" placeholder="Note" formControlName="note"></textarea>
+            </p>
+        </div>
+    </div>
+
+    <div formGroupName="settings" class="row justify-content-between mr-2 ml-2 mb-2">
+        <button *ngIf="componentState.View" class="col-sm-3 btn btn-outline-primary" [disabled]="!settingsF.isPrev"
+            (click)="prevCard()">Previous</button>
+        <button *ngIf="componentState.View" class="col-sm-3  btn btn-outline-primary"
+            [disabled]="(!cards || cards.length == 0)" (click)="editMode()">Edit</button>
+        <button *ngIf="componentState.View" class="col-sm-3  btn btn-outline-primary"
+            [disabled]="(!cards || cards.length == 0)" (click)="delete()">Delete</button>
+        <button *ngIf="componentState.View" class="col-sm-3  btn btn-outline-primary" [disabled]="!settingsF.isNext"
+            (click)="nextCard()">Next</button>
+
+        <button *ngIf="(componentState.Edit || componentState.Create)" class="col-sm-3  btn btn-outline-primary"
+            (click)="cancel()">Cancel</button>
+        <button *ngIf="(componentState.Edit || componentState.Create)" class="col-sm-3  btn btn-outline-primary"
+            (click)="save()">Save</button>
+    </div>
+</form>
